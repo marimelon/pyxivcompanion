@@ -130,7 +130,7 @@ class Account:
             url += 'request_id=' + request_id
             return urllib.parse.quote(url, safe='')
 
-        url = f'{Config.SECURE_SQUARE_ENIX_URL_BASE}/oauth/oa/oauthauth' + '?'
+        url = f'{Config.SECURE_SQUARE_ENIX_URL_BASE}oauth/oa/oauthauth' + '?'
         url += 'client_id=' + 'ffxiv_comapp' + '&'
         url += 'lang=' + 'ja-ja' + '&'
         url += 'response_type=' + 'code' + '&'
