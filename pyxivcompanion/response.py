@@ -1,6 +1,6 @@
 
 import aiohttp
-from typing import TypedDict
+from pydantic import BaseModel
 
 
 class SightResponseError(Exception):
@@ -10,7 +10,7 @@ class SightResponseError(Exception):
         super().__init__(f'SightError url={response.url}, status={response.status}')
 
 
-class SightResponseLoginCharactersAccountCharacter(TypedDict):
+class SightResponseLoginCharactersAccountCharacter(BaseModel):
     cid: str
     name: str
     world: str
@@ -21,7 +21,7 @@ class SightResponseLoginCharactersAccountCharacter(TypedDict):
     isRenamed: bool
 
 
-class SightResponseLoginCharactersAccount(TypedDict):
+class SightResponseLoginCharactersAccount(BaseModel):
     accName: str
     contractEndTime: int
     role: int
@@ -29,17 +29,17 @@ class SightResponseLoginCharactersAccount(TypedDict):
     characters: list[SightResponseLoginCharactersAccountCharacter]
 
 
-class SightResponseLoginCharacters(TypedDict):
+class SightResponseLoginCharacters(BaseModel):
     updatedAt: int
     apiParameters: dict
     accounts: list[SightResponseLoginCharactersAccount]
 
 
-class SightResponseLoginCharacter(TypedDict):
+class SightResponseLoginCharacter(BaseModel):
     region: str
 
 
-class SightResponseLoginToken(TypedDict):
+class SightResponseLoginToken(BaseModel):
     token: str
     salt: str
     region: str

@@ -30,7 +30,8 @@ class LoginObj:
         if not res.status == 200:
             raise SightResponseError(res)
 
-        return await res.json()
+        data = await res.json()
+        return SightResponseLoginCharacters(**data)
 
     async def get_region(self, cid: str) -> str:
         req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}login/characters/{cid}',
@@ -103,14 +104,15 @@ class Account:
         if not res.status == 200:
             raise SightResponseError(res)
 
-        return await res.json()
+        data = await res.json()
+        return SightResponseLoginToken(**data)
 
     @staticmethod
     async def __get_new_token(userid: str, session: aiohttp.ClientSession):
 
         res_data = await Account.request_token(userid, session=session)
 
-        return (res_data['token'], res_data['salt'])
+        return (res_data.token, res_data.salt)
 
     @staticmethod
     def __get_uid(userid: str, salt: str):
@@ -149,12 +151,16 @@ class Account:
 
         if not 'cis_sessid' in text:
             # Login form
-            action1 = re.search(r'(.*)action="(?P<action>[^"]+)">', text).group('action')  # oauthlogin.send?client_id=...
-            stored = re.search(r'(.*)name="_STORED_" value="(?P<stored>[^"]+)">', text).group('stored')
+            # oauthlogin.send?client_id=...
+            action1 = re.search(
+                r'(.*)action="(?P<action>[^"]+)">', text).group('action')
+            stored = re.search(
+                r'(.*)name="_STORED_" value="(?P<stored>[^"]+)">', text).group('stored')
             form_date1 = f'_STORED_={stored}&sqexid={username}&password={password}'
 
             req = CompanionRequest(url=f'{Config.SECURE_SQUARE_ENIX_URL_BASE}oauth/oa/{action1}',
-                                   Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix('/'),
+                                   Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix(
+                                       '/'),
                                    UserAgent=CompanionRequest.USER_AGENT_2,
                                    Accept=CompanionRequest.ACCEPT_1,
                                    ContentType=CompanionRequest.CONTENT_TYPE_FORM)
@@ -163,11 +169,15 @@ class Account:
             if res.status == 200:
                 # OTP form
                 text = await res.text()
-                action2 = re.search(r'(.*)action="(?P<action>[^"]+)" method="post">', text).group('action')  # oauthlogin.sendOtp?client_id=...
-                stored = re.search(r'(.*)name="_STORED_" value="(?P<stored>[^"]+)">', text).group('stored')
+                # oauthlogin.sendOtp?client_id=...
+                action2 = re.search(
+                    r'(.*)action="(?P<action>[^"]+)" method="post">', text).group('action')
+                stored = re.search(
+                    r'(.*)name="_STORED_" value="(?P<stored>[^"]+)">', text).group('stored')
                 form_date2 = f'_STORED_={stored}&otppw={otp}'
                 req = CompanionRequest(url=f'{Config.SECURE_SQUARE_ENIX_URL_BASE}oauth/oa/{action2}',
-                                       Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix('/'),
+                                       Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix(
+                                           '/'),
                                        UserAgent=CompanionRequest.USER_AGENT_2,
                                        Accept=CompanionRequest.ACCEPT_1,
                                        ContentType=CompanionRequest.CONTENT_TYPE_FORM)
@@ -186,14 +196,17 @@ class Account:
         else:
             redirect = None
 
-        action = re.search(r'(.*)action="(?P<action>[^"]+)">', text).group('action').replace('&amp;', '&')
-        cis_sessid = re.search(r'(.*)name="cis_sessid" type="hidden" value="(?P<cis_sessid>[^"]+)">', text).group('cis_sessid')
+        action = re.search(
+            r'(.*)action="(?P<action>[^"]+)">', text).group('action').replace('&amp;', '&')
+        cis_sessid = re.search(
+            r'(.*)name="cis_sessid" type="hidden" value="(?P<cis_sessid>[^"]+)">', text).group('cis_sessid')
         form_date = f'cis_sessid={cis_sessid}&provision=&_c=1'
         req = CompanionRequest(url=action,
                                UserAgent=CompanionRequest.USER_AGENT_2,
                                Accept=CompanionRequest.ACCEPT_1,
                                ContentType=CompanionRequest.CONTENT_TYPE_FORM,
-                               Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix('/'),
+                               Origin=Config.SECURE_SQUARE_ENIX_URL_BASE.removesuffix(
+                                   '/'),
                                Referer=redirect)
         res = await req.post(data=form_date, session=session)
         if not res.status == 200:
