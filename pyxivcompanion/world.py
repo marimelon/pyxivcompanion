@@ -1,7 +1,8 @@
 from enum import Enum, auto
 
 class XIV_WORLD(Enum):
-    #Elemental
+    # Japan
+    # Elemental
     Aegis     = auto()
     Atomos    = auto()
     Carbuncle = auto() 
@@ -12,7 +13,7 @@ class XIV_WORLD(Enum):
     Tonberry  = auto()      
     Typhon    = auto()  
     Unicorn   = auto()
-    #Gaia
+    # Gaia
     Alexander  = auto()    
     Bahamut    = auto()
     Durandal   = auto()    
@@ -24,7 +25,7 @@ class XIV_WORLD(Enum):
     Valefor    = auto()
     Yojimbo    = auto()
     Zeromus    = auto()
-    #Mana
+    # Mana
     Anima        = auto()  
     Asura        = auto()  
     Belias       = auto()  
@@ -35,7 +36,52 @@ class XIV_WORLD(Enum):
     Masamune     = auto()      
     Pandaemonium = auto()          
     Shinryu      = auto()  
-    Titan        = auto()  
+    Titan        = auto()
+
+    # North America  
+    # Aether
+    Adamantoise     = auto()
+    Cactuar         = auto()
+    Faerie          = auto()
+    Gilgamesh       = auto()
+    Jenova          = auto()
+    Midgardsormr    = auto()
+    Sargatanas      = auto()
+    Siren           = auto()
+    # Primal
+    Behemoth    = auto()
+    Excalibur   = auto()
+    Exodus      = auto()
+    Famfrit     = auto()
+    Hyperion    = auto()
+    Lamia       = auto()
+    Leviathan   = auto()
+    Ultros      = auto()
+    # Crystal
+    Balmung     = auto()
+    Brynhildr   = auto()
+    Coeurl      = auto()
+    Diabolos    = auto()
+    Goblin      = auto()
+    Malboro     = auto()
+    Mateus      = auto()
+    Zalera      = auto()
+
+    # Europe
+    # Chaos
+    Cerberus    = auto()
+    Louisoix    = auto()
+    Moogle      = auto()
+    Omega       = auto()
+    Ragnarok    = auto()
+    Spriggan    = auto()
+    # Light
+    Lich        = auto()
+    Odin        = auto()
+    Phoenix     = auto()
+    Shiva       = auto()
+    Twintania   = auto()
+    Zodiark     = auto()
 
     @classmethod
     def Elemental(cls):
@@ -53,5 +99,37 @@ class XIV_WORLD(Enum):
                 cls.Mandragora, cls.Masamune, cls.Pandaemonium, cls.Shinryu, cls.Titan}
 
     @classmethod
+    def Aether(cls):
+        return {cls.Adamantoise, cls.Cactuar, cls.Faerie, cls.Gilgamesh,
+                cls.Jenova, cls.Midgardsormr, cls.Sargatanas, cls.Siren}
+
+    @classmethod
+    def Primal(cls):
+        return {cls.Behemoth, cls.Excalibur, cls.Exodus, cls.Famfrit,
+                cls.Hyperion, cls.Lamia, cls.Leviathan, cls.Ultros}
+
+    @classmethod
+    def Crystal(cls):
+        return {cls.Balmung, cls.Brynhildr, cls.Coeurl, cls.Diabolos,
+                cls.Goblin, cls.Malboro, cls.Mateus, cls.Zalera}
+
+    @classmethod
+    def Chaos(cls):
+        return {cls.Cerberus, cls.Louisoix, cls.Moogle, cls.Omega, cls.Ragnarok, cls.Spriggan}
+
+    @classmethod
+    def Light(cls):
+        return {cls.Lich, cls.Odin, cls.Phoenix, cls.Shiva, cls.Twintania, cls.Zodiark}
+
+
+    @classmethod
     def Japan(cls):
         return (cls.Mana() | cls.Gaia() | cls.Mana())
+
+    @classmethod
+    def NorthAmerica(cls):
+        return (cls.Aether() | cls.Primal() | cls.Crystal())
+
+    @classmethod
+    def Europe(cls):
+        return (cls.Chaos() | cls.Light())
