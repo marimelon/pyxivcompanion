@@ -49,7 +49,7 @@ class Token:
     @classmethod
     async def create_new_token(cls, cid: str, sqex_id: str, sqex_pass: str, otp: str = None):
         login = await Account.login(sqex_id, sqex_pass, otp)
-        return cls.create_new_token_from_loginobj(cid=cid, login=login)
+        return await cls.create_new_token_from_loginobj(cid=cid, login=login)
 
     @classmethod
     async def create_new_token_from_loginobj(cls, cid: str, login: LoginObj):

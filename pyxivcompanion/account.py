@@ -45,7 +45,7 @@ class LoginObj:
         return res_data['region']
 
     async def login_character(self):
-        req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}ogin/character',
+        req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}login/character',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=self.token)
         res = await req.get()
