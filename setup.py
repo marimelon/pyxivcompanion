@@ -6,5 +6,5 @@ setup(
     author='marimelon',
     packages=["pyxivcompanion"],
     package_data={'pyxivcompanion': ['public-key.pem']},
-    install_requires=["aiohttp", "pycryptodome"]
+    install_requires=["aiohttp", "pycryptodome", "pydantic"]
 )

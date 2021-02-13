@@ -1,6 +1,7 @@
 import uuid
 
 import aiohttp
+from pydantic import BaseModel
 
 from .config import Config
 from .request import CompanionRequest
@@ -19,6 +20,10 @@ class OnlineStatusResponse:
         return cls(body, raw=response)
 
 
+class OnlineStatusResponse(BaseModel):
+    characters: list[str]
+
+
 class AddressBook:
     @staticmethod
     async def get_online_states(token: Token):
@@ -28,6 +33,7 @@ class AddressBook:
                                Token=token.login.token)
         res = await req.get()
         if res.status == 200:
-            return await OnlineStatusResponse.init(res)
+            data = await res.json()
+            return await OnlineStatusResponse(**data), res
         else:
             raise await CompanionErrorResponse.select(res)
