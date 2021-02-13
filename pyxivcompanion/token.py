@@ -29,16 +29,16 @@ class Token:
 
     async def refresh(self, sqex_id: str = None, sqex_pass: str = None, otp: str = None):
         res_data = await Account.request_token(self.login.userId)
-        if res_data['region'] == "":
+        if res_data.region == "":
             if sqex_id is None or sqex_pass is None:
                 Exception('sqex_id and sqex_password required.')
             login = await Account.login(sqex_id=sqex_id, sqex_pass=sqex_pass, otp=otp,
                                         userId=self.login.userId,
-                                        token=res_data['token'], salt=res_data['salt'])
+                                        token=res_data.token, salt=res_data.salt)
             region = await login.get_region(self.cid)
             character_info = await self.get_character_info(login.token, region)
         else:
-            self.login.token = res_data['token']
+            self.login.token = res_data.token
 
         # /login/character
         await Login.get_character(token=self)
