@@ -1,11 +1,11 @@
 import uuid
 
-from .config import Config
 from .account import Account, LoginObj
 from .character import Character
+from .config import Config
 from .login import Login
 from .request import CompanionRequest
-from .response import SightResponseError
+from .response import SightResponseError, SightResponseLoginCharacter
 
 
 class Token:
@@ -17,7 +17,7 @@ class Token:
         self.world = world
 
     @staticmethod
-    async def get_character_info(token: str, region: str) -> dict:
+    async def get_character_info(token: str, region: str) -> SightResponseLoginCharacter:
         req = CompanionRequest(url=f'{region}{Config.SIGHT_PATH}login/character',
                                RequestID=str(uuid.uuid1()).upper(),
                                Token=token)
@@ -25,7 +25,8 @@ class Token:
         if not res.status == 200:
             raise SightResponseError(res)
 
-        return await res.json()
+        data = await res.json()
+        return SightResponseLoginCharacter(**data)
 
     async def refresh(self, sqex_id: str = None, sqex_pass: str = None, otp: str = None):
         res_data = await Account.request_token(self.login.userId)
@@ -63,8 +64,8 @@ class Token:
         await login.character_login_status()
 
         return cls(login=login, region=region, cid=cid,
-                   character_name=character_info['character']['name'],
-                   world=character_info['character']['world'])
+                   character_name=character_info.character.name,
+                   world=character_info.character.world)
 
     def to_dict(self):
         return {'userId': self.login.userId,

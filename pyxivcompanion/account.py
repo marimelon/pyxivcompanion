@@ -12,8 +12,9 @@ from Crypto.PublicKey import RSA
 
 from .config import Config
 from .request import CompanionRequest
-from .response import SightResponseLoginCharacters
-from .response import SightResponseError, SightResponseLoginToken
+from .response import (SightResponseCharacterLoginStatus, SightResponseError,
+                       SightResponseLoginCharacter,
+                       SightResponseLoginCharacters, SightResponseLoginToken)
 
 
 class LoginObj:
@@ -45,7 +46,7 @@ class LoginObj:
 
         return res_data['region']
 
-    async def login_character(self):
+    async def login_character(self) -> SightResponseLoginCharacter:
         req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}login/character',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=self.token)
@@ -53,13 +54,18 @@ class LoginObj:
         if not res.status == 200:
             raise SightResponseError(res)
 
-    async def character_login_status(self):
+        data = await res.json()
+        return SightResponseLoginCharacter(**data)
+
+    async def character_login_status(self) -> SightResponseCharacterLoginStatus:
         req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}character/login-status',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=self.token)
         res = await req.get()
         if not res.status == 200:
             raise SightResponseError(res)
+        data = await res.json()
+        return SightResponseCharacterLoginStatus(**data)
 
     async def character_worlds(self):
         req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}character/worlds',

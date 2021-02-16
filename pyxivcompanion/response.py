@@ -35,8 +35,32 @@ class SightResponseLoginCharacters(BaseModel):
     accounts: list[SightResponseLoginCharactersAccount]
 
 
+class SightResponseLoginCharacterDomains(BaseModel):
+    lodestone: str
+    cdn1: str
+    cdn2: str
+    appWeb: str
+
+
+class SightResponseLoginCharacterCharacter(BaseModel):
+    cid: str
+    name: str
+    world: str
+    portrait: str
+    lodestonecid: str
+
+
 class SightResponseLoginCharacter(BaseModel):
-    region: str
+    updatedAt: int
+    domains: SightResponseLoginCharacterDomains
+    role: int
+    character: SightResponseLoginCharacterCharacter
+
+
+class SightResponseCharacterLoginStatus(BaseModel):
+    getBagFlag: bool
+    world: str
+    currentWorld: str
 
 
 class SightResponseLoginToken(BaseModel):
