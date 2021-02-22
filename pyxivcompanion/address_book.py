@@ -1,23 +1,11 @@
 import uuid
 
-import aiohttp
 from pydantic import BaseModel
 
 from .config import Config
 from .request import CompanionRequest
 from .response import CompanionErrorResponse
 from .token import Token
-
-
-class OnlineStatusResponse:
-    def __init__(self, data: dict, *, raw: aiohttp.ClientResponse = None):
-        self.raw = raw
-        self.characters: list[str] = data['characters']
-
-    @classmethod
-    async def init(cls, response: aiohttp.ClientResponse):
-        body = await response.json()
-        return cls(body, raw=response)
 
 
 class OnlineStatusResponse(BaseModel):
