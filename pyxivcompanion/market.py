@@ -57,7 +57,7 @@ class Market:
         """GET /market/items/catalog/{itemid}"""
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/items/catalog/{itemid}',
                                RequestID=str(uuid.uuid4()).upper(),
-                               Token=token.login.token)
+                               Token=token.token)
         res = await req.get(params={'worldName': token.world})
         if res.status == 200:
             data = await res.json()
@@ -70,7 +70,7 @@ class Market:
         """GET /market/items/history/catalog/{itemid}"""
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/items/history/catalog/{itemid}',
                                RequestID=str(uuid.uuid4()).upper(),
-                               Token=token.login.token)
+                               Token=token.token)
         res = await req.get(params={'worldName': token.world})
 
         if res.status == 200:

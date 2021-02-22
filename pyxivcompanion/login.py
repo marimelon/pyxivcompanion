@@ -39,7 +39,7 @@ class Login:
         """GET /login/character"""
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}login/character',
                                RequestID=str(uuid.uuid4()).upper(),
-                               Token=token.login.token)
+                               Token=token.token)
         res = await req.get()
         if res.status == 200:
             data = await res.json()

@@ -77,7 +77,7 @@ class Items:
         """GET /items/character"""
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}items/character',
                                RequestID=str(uuid.uuid4()).upper(),
-                               Token=token.login.token)
+                               Token=token.token)
         res = await req.get()
         if res.status == 200:
             data = await res.json()
@@ -90,7 +90,7 @@ class Items:
         """GET /items/retainers/{retainer_id}"""
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}items/retainers/{retainer_id}',
                                RequestID=str(uuid.uuid4()).upper(),
-                               Token=token.login.token)
+                               Token=token.token)
         res = await req.get()
         if res.status == 200:
             data = await res.json()
