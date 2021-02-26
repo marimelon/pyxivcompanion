@@ -75,7 +75,7 @@ class Market:
 
         if res.status == 200:
             data = await res.json()
-            return await MarketHistoryResponse(**data), res
+            return MarketHistoryResponse(**data), res
         else:
             raise await CompanionErrorResponse.select(res)
 
