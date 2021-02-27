@@ -186,6 +186,18 @@ class Market:
             raise await CompanionErrorResponse.select(res)
 
     @staticmethod
+    async def set_favorites_notification_setting(setting: MarketFavoritesNotificationSetting, token: Token):
+        """POST /market/favorites/notification-setting """
+        req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites/notification-setting',
+                               RequestID=str(uuid.uuid4()).upper(),
+                               Token=token.token)
+        res = await req.post(setting.dict())
+        if res.status == 200:
+            return None, res
+        else:
+            raise await CompanionErrorResponse.select(res)
+
+    @staticmethod
     async def stop_retainer_market(retainer_id: str, token: Token):
         """DELETE /market/retainers/{retainer_id}"""
         pass
