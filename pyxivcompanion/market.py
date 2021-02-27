@@ -68,6 +68,10 @@ class MarketFavorites(BaseModel):
     items: list[MarketFavoriteItem]
 
 
+class MarketFavoritesNotificationSetting(BaseModel):
+    marketItemCheckTimes: list[int]
+
+
 class Market:
     @staticmethod
     async def get_market(itemid: int, token: Token) -> tuple[MarketResponse, ClientResponse]:
@@ -107,6 +111,19 @@ class Market:
         if res.status == 200:
             data = await res.json()
             return MarketFavorites(**data), res
+        else:
+            raise await CompanionErrorResponse.select(res)
+
+    @staticmethod
+    async def get_favorites_notification_setting(token: Token):
+        """GET /market/favorites/notification-setting """
+        req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites/notification-setting',
+                               RequestID=str(uuid.uuid4()).upper(),
+                               Token=token.token)
+        res = await req.get()
+        if res.status == 200:
+            data = await res.json()
+            return MarketFavoritesNotificationSetting(**data), res
         else:
             raise await CompanionErrorResponse.select(res)
 
