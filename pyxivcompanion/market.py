@@ -51,6 +51,23 @@ class MarketHistoryResponse(BaseModel):
     history: list[History]
 
 
+class MarketFavoriteItem(BaseModel):
+    catalogId: int
+    eorzeadbItemId: str
+    icon: str
+    hq: int
+    watchPrice: int
+    matchCount: int
+    exhibitionCount: int
+    createdAt: int
+    notification: bool
+
+
+class MarketFavorites(BaseModel):
+    updatedAt: int
+    items: list[MarketFavoriteItem]
+
+
 class Market:
     @staticmethod
     async def get_market(itemid: int, token: Token) -> tuple[MarketResponse, ClientResponse]:
@@ -76,6 +93,20 @@ class Market:
         if res.status == 200:
             data = await res.json()
             return MarketHistoryResponse(**data), res
+        else:
+            raise await CompanionErrorResponse.select(res)
+
+    @staticmethod
+    async def get_favorites(token: Token):
+        """GET /market/favorites """
+        req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
+                               RequestID=str(uuid.uuid4()).upper(),
+                               Token=token.token)
+        res = await req.get(params={'worldName': token.world})
+
+        if res.status == 200:
+            data = await res.json()
+            return MarketFavorites(**data), res
         else:
             raise await CompanionErrorResponse.select(res)
 
