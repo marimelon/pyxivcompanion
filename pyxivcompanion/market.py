@@ -83,6 +83,13 @@ class MarketCategoryItemList(BaseModel):
     items: list[MarketCategoryItemListItem]
 
 
+class MarketAddFavoriteRequest(BaseModel):
+    hq: bool
+    notification: bool
+    catalogId: int
+    watchPrice: int
+
+
 class Market:
     @staticmethod
     async def get_market(itemid: int, token: Token) -> tuple[MarketResponse, ClientResponse]:
@@ -133,6 +140,19 @@ class Market:
                                Token=token.token)
         res = await req.get(params={'worldName': token.world})
 
+        if res.status == 200:
+            data = await res.json()
+            return MarketFavorites(**data), res
+        else:
+            raise await CompanionErrorResponse.select(res)
+
+    @staticmethod
+    async def add_favorite(request: MarketAddFavoriteRequest, token: Token):
+        """POST /market/favorites """
+        req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
+                               RequestID=str(uuid.uuid4()).upper(),
+                               Token=token.token)
+        res = await req.post(request.dict(), params={'worldName': token.world})
         if res.status == 200:
             data = await res.json()
             return MarketFavorites(**data), res

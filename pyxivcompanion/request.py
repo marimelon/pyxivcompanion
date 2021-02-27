@@ -4,6 +4,7 @@ import copy
 import aiohttp
 from .config import Config
 
+
 class CompanionRequest():
     APP_VERSION = Config.APP_VERSION
 
@@ -65,7 +66,7 @@ class CompanionRequest():
 
         return copy.copy(delete_if_none(dic))
 
-    async def post(self, json: dict = None, data=None, session: aiohttp.ClientSession = None, process_accepted=True, allow_redirects=True) -> aiohttp.ClientResponse:
+    async def post(self, json: dict = None, data=None, params: dict = None, session: aiohttp.ClientSession = None, process_accepted=True, allow_redirects=True) -> aiohttp.ClientResponse:
         if session is None:
             _session = aiohttp.ClientSession(trust_env=True,
                                              connector=aiohttp.TCPConnector(verify_ssl=False))
@@ -76,6 +77,7 @@ class CompanionRequest():
             res = await _session.post(url=self.url,
                                       data=data,
                                       json=json,
+                                      params=params,
                                       headers=self.create_headers(),
                                       allow_redirects=allow_redirects)
             if process_accepted and res.status == 202:
