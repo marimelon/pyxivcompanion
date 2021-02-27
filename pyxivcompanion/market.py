@@ -160,6 +160,19 @@ class Market:
             raise await CompanionErrorResponse.select(res)
 
     @staticmethod
+    async def delete_favorite(itemid: int, token: Token):
+        """DELETE /market/favorites """
+        req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
+                               RequestID=str(uuid.uuid4()).upper(),
+                               Token=token.token)
+        res = await req.delete({'catalogId': itemid}, params={'worldName': token.world})
+        if res.status == 200:
+            data = await res.json()
+            return MarketFavorites(**data), res
+        else:
+            raise await CompanionErrorResponse.select(res)
+
+    @staticmethod
     async def get_favorites_notification_setting(token: Token):
         """GET /market/favorites/notification-setting """
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites/notification-setting',

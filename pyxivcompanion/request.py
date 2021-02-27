@@ -111,3 +111,27 @@ class CompanionRequest():
         finally:
             if session is None:
                 await _session.close()
+
+    async def delete(self, json: dict = None, data=None, params: dict = None, session: aiohttp.ClientSession = None, process_accepted=True, allow_redirects=True) -> aiohttp.ClientResponse:
+        if session is None:
+            _session = aiohttp.ClientSession(trust_env=True,
+                                             connector=aiohttp.TCPConnector(verify_ssl=False))
+        else:
+            _session = session
+
+        try:
+            res = await _session.delete(url=self.url,
+                                        data=data,
+                                        json=json,
+                                        params=params,
+                                        headers=self.create_headers(),
+                                        allow_redirects=allow_redirects)
+            if process_accepted and res.status == 202:
+                await asyncio.sleep(2)
+                return await self.delete(json=json, session=session, process_accepted=process_accepted, allow_redirects=allow_redirects)
+            else:
+                await res.read()
+                return res
+        finally:
+            if session is None:
+                await _session.close()
