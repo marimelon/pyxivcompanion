@@ -97,7 +97,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/items/catalog/{itemid}',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.get(params={'worldName': token.world})
+        res = await req.get(params={'worldName': token.currentWorld})
         if res.status == 200:
             data = await res.json()
             return MarketResponse(**data), res
@@ -110,7 +110,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/items/history/catalog/{itemid}',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.get(params={'worldName': token.world})
+        res = await req.get(params={'worldName': token.currentWorld})
 
         if res.status == 200:
             data = await res.json()
@@ -124,7 +124,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/items/category/{categoryId}',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.get(params={'worldName': token.world})
+        res = await req.get(params={'worldName': token.currentWorld})
 
         if res.status == 200:
             data = await res.json()
@@ -138,7 +138,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.get(params={'worldName': token.world})
+        res = await req.get(params={'worldName': token.currentWorld})
 
         if res.status == 200:
             data = await res.json()
@@ -152,7 +152,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.post(request.dict(), params={'worldName': token.world})
+        res = await req.post(request.dict(), params={'worldName': token.currentWorld})
         if res.status == 200:
             data = await res.json()
             return MarketFavorites(**data), res
@@ -165,7 +165,7 @@ class Market:
         req = CompanionRequest(url=f'{token.region}{Config.SIGHT_PATH}market/favorites',
                                RequestID=str(uuid.uuid4()).upper(),
                                Token=token.token)
-        res = await req.delete({'catalogId': itemid}, params={'worldName': token.world})
+        res = await req.delete({'catalogId': itemid}, params={'worldName': token.currentWorld})
         if res.status == 200:
             data = await res.json()
             return MarketFavorites(**data), res

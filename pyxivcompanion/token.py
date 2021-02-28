@@ -18,6 +18,7 @@ class Token(BaseModel):
     cid: str
     character_name: str
     world: str
+    currentWorld:str
 
     @staticmethod
     async def get_character_info(token: str, region: str) -> SightResponseLoginCharacter:
@@ -48,7 +49,8 @@ class Token(BaseModel):
         await Login.get_character(token=self)
 
         # /character/worlds
-        await Character.get_worlds(token=self)
+        data,res = await Character.get_worlds(token=self)
+        self.currentWorld = data.currentWorld
 
     @classmethod
     async def create_new_token(cls, cid: str, sqex_id: str, sqex_pass: str, otp: str = None):
@@ -64,7 +66,7 @@ class Token(BaseModel):
         await login.login_character()
 
         # /character/login-status
-        await login.character_login_status()
+        login_status = await login.character_login_status()
 
         return cls(userId=login.userId,
                    token=login.token,
@@ -72,4 +74,5 @@ class Token(BaseModel):
                    region=region,
                    cid=cid,
                    character_name=character_info.character.name,
-                   world=character_info.character.world)
+                   world=character_info.character.world,
+                   currentWorld=login_status.currentWorld)
