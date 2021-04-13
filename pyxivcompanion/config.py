@@ -1,7 +1,7 @@
 from .utility import classproperty
 
 class Config:
-    APP_VERSION = "1.11.2"
+    APP_VERSION = "1.12.0"
     GLOBAL_COMPANION_BASE_URL = 'https://companion.finalfantasyxiv.com/'
     SIGHT_PATH = 'sight-v060/sight/'
 
