@@ -193,6 +193,9 @@ class Account:
                 raise SightResponseError(res)
 
             redirect = res.headers['Location']
+            if not redirect.startswith("http"):
+                redirect = urllib.parse.urljoin(f'{Config.SECURE_SQUARE_ENIX_URL_BASE}oauth/oa/', redirect)
+
             req = CompanionRequest(url=redirect,
                                    Cookie=f'_rsid="";_si={res.cookies["_si"].value}')
             res = await req.get(session=session)
