@@ -24,7 +24,7 @@ class LoginObj:
         self.salt = salt
 
     async def get_characters(self) -> SightResponseLoginCharacters:
-        req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}login/characters',
+        req = CompanionRequest(url=f'{Config.GLOBAL_COMPANION_BASE}login/locations/characters?location=jp',
                                RequestID=str(uuid.uuid1()).upper(),
                                Token=self.token)
         res = await req.get()
