@@ -5,38 +5,39 @@ class XIV_WORLD(Enum):
     # Elemental
     Aegis     = auto()
     Atomos    = auto()
-    Carbuncle = auto() 
-    Garuda    = auto()  
-    Gungnir   = auto()  
-    Kujata    = auto()  
-    Ramuh     = auto()  
-    Tonberry  = auto()      
-    Typhon    = auto()  
-    Unicorn   = auto()
+    Carbuncle = auto()
+    Garuda    = auto()
+    Gungnir   = auto()
+    Kujata    = auto()
+    Tonberry  = auto()
+    Typhon    = auto()
     # Gaia
-    Alexander  = auto()    
+    Alexander  = auto()
     Bahamut    = auto()
-    Durandal   = auto()    
+    Durandal   = auto()
     Fenrir     = auto()
     Ifrit      = auto()
     Ridill     = auto()
     Tiamat     = auto()
     Ultima     = auto()
-    Valefor    = auto()
-    Yojimbo    = auto()
-    Zeromus    = auto()
     # Mana
-    Anima        = auto()  
-    Asura        = auto()  
-    Belias       = auto()  
-    Chocobo      = auto()  
-    Hades        = auto()  
-    Ixion        = auto()  
-    Mandragora   = auto()      
-    Masamune     = auto()      
-    Pandaemonium = auto()          
-    Shinryu      = auto()  
+    Anima        = auto()
+    Asura        = auto()
+    Chocobo      = auto()
+    Hades        = auto()
+    Ixion        = auto()
+    Masamune     = auto()
+    Pandaemonium = auto()
     Titan        = auto()
+    # Meteor
+    Belias       = auto()
+    Mandragora   = auto()
+    Ramuh        = auto()  
+    Shinryu      = auto()
+    Unicorn      = auto()
+    Valefor      = auto()
+    Yojimbo      = auto()
+    Zeromus      = auto()
 
     # North America  
     # Aether
@@ -73,30 +74,39 @@ class XIV_WORLD(Enum):
     Louisoix    = auto()
     Moogle      = auto()
     Omega       = auto()
+    Phantom     = auto()
     Ragnarok    = auto()
+    Sagittarius = auto()
     Spriggan    = auto()
     # Light
+    Alpha       = auto()
     Lich        = auto()
     Odin        = auto()
     Phoenix     = auto()
+    Raiden      = auto()
     Shiva       = auto()
     Twintania   = auto()
     Zodiark     = auto()
 
     @classmethod
     def Elemental(cls):
-        return {cls.Aegis, cls.Atomos, cls.Aegis, cls.Atomos, cls.Carbuncle, cls.Garuda, cls.Gungnir,
-                cls.Kujata, cls.Ramuh, cls.Tonberry, cls.Typhon, cls.Unicorn}
+        return {cls.Aegis, cls.Atomos, cls.Carbuncle, cls.Garuda,
+                cls.Gungnir, cls.Kujata, cls.Tonberry, cls.Typhon}
 
     @classmethod
     def Gaia(cls):
-        return {cls.Alexander, cls.Bahamut, cls.Durandal, cls.Fenrir, cls.Ifrit, cls.Ridill,
-                cls.Tiamat, cls.Ultima, cls.Valefor, cls.Yojimbo, cls.Zeromus}
+        return {cls.Alexander, cls.Bahamut, cls.Durandal, cls.Fenrir, cls.Ifrit,
+                cls.Ridill, cls.Tiamat, cls.Ultima}
 
     @classmethod
     def Mana(cls):
-        return {cls.Anima, cls.Asura, cls.Belias, cls.Chocobo, cls.Hades, cls.Ixion,
-                cls.Mandragora, cls.Masamune, cls.Pandaemonium, cls.Shinryu, cls.Titan}
+        return {cls.Anima, cls.Asura, cls.Chocobo, cls.Hades, cls.Ixion,
+                cls.Masamune, cls.Pandaemonium, cls.Titan}
+
+    @classmethod
+    def Meteor(cls):
+        return {cls.Belias, cls.Mandragora, cls.Ramuh, cls.Shinryu, cls.Unicorn,
+                cls.Valefor, cls.Yojimbo, cls.Zeromus}
 
     @classmethod
     def Aether(cls):
@@ -115,16 +125,18 @@ class XIV_WORLD(Enum):
 
     @classmethod
     def Chaos(cls):
-        return {cls.Cerberus, cls.Louisoix, cls.Moogle, cls.Omega, cls.Ragnarok, cls.Spriggan}
+        return {cls.Cerberus, cls.Louisoix, cls.Moogle, cls.Omega, cls.Ragnarok,
+                cls.Spriggan, cls.Sagittarius, cls.Phantom}
 
     @classmethod
     def Light(cls):
-        return {cls.Lich, cls.Odin, cls.Phoenix, cls.Shiva, cls.Twintania, cls.Zodiark}
+        return {cls.Lich, cls.Odin, cls.Phoenix, cls.Shiva, cls.Twintania,
+                cls.Zodiark, cls.Alpha, cls.Raiden}
 
 
     @classmethod
     def Japan(cls):
-        return (cls.Mana() | cls.Gaia() | cls.Mana())
+        return (cls.Mana() | cls.Gaia() | cls.Mana() | cls.Meteor())
 
     @classmethod
     def NorthAmerica(cls):
